@@ -1,0 +1,62 @@
+# 계정 생성
+create user '[id]'@localhost identified by '[password]';
+create user '[id]'@'%' identified by '[password]';
+
+
+# db 생성
+create database [db];
+
+
+# 권한 부여
+grant all privileges on DajeongBot.* to [id]@'%' identified by '[password]';
+grant all privileges on DajeongBot.* to [id]@localhost identified by '[password]';
+flush privileges;
+
+
+# [word]
+id, word, mean, part
+
+CREATE TABLE word(
+    id INT(255) NOT NULL auto_increment,
+    word VARCHAR(50) NOT NULL,
+    PRIMARY KEY (id)
+)DEFAULT CHARSET=utf8;
+
+
+# [mean]
+id, word_id, mean
+
+CREATE TABLE mean(
+    id INT(255) NOT NULL auto_increment,
+    word_id INT(255) NOT NULL,
+    mean TEXT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (word_id) REFERENCES word(id)
+)DEFAULT CHARSET=utf8;
+
+
+# [mean_keywords]
+id, word_id, mean_keyword
+
+CREATE TABLE mean_keywords(
+    id INT(255) NOT NULL auto_increment,
+    word_id INT(255) NOT NULL,
+    mean_keyword VARCHAR(50) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (word_id) REFERENCES word(id)
+)DEFAULT CHARSET=utf8;
+
+
+# [similar_keywords]
+id, word_id, similar_keyword
+
+CREATE TABLE similar_keywords(
+    id INT(255) NOT NULL auto_increment,
+    word_id INT(255) NOT NULL,
+    similar_keyword VARCHAR(50) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (word_id) REFERENCES word(id)
+)DEFAULT CHARSET=utf8;
+
+# db 구조 추출
+flask-sqlacodegen "mysql://[id]:[password]@[IP address]/[DB]" --flask > models.py
