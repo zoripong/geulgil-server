@@ -12,7 +12,8 @@ import config
 
 
 def save_new_word(word):
-
+    # 만약 있는 단어일 경우 의미만 추가
+    # 없는 단어일 경우 word에도 추가 mean에도 추가
     db.session.commit()
     return ''
 
