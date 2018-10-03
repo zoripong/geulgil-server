@@ -3,7 +3,7 @@ from flask.json import jsonify
 
 from controllers.search import search_mean_word, search_similar_word, search_word
 
-bp = Blueprint('test', __name__, url_prefix='/words')
+bp = Blueprint('words', __name__, url_prefix='/words')
 
 
 # [ 검색 할 경우 ]

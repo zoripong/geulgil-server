@@ -11,7 +11,7 @@ import config
 # [ 데이터베이스에서 새로운 단어를 추가 저장함 ]
 
 
-def save_new_word():
+def save_new_word(word):
 
     db.session.commit()
     return ''

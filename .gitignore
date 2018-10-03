@@ -2,3 +2,4 @@
 config.py
 geulgil-venv
 .idea
+/geulgil-server/geulgil-venv/

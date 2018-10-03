@@ -1,9 +1,8 @@
 from logging.handlers import RotatingFileHandler
 
-from flask import Flask, logging
+from flask import Flask
 from werkzeug.utils import find_modules, import_string
 # from djbot import db
-import config
 
 
 def create_app(debug=False):
