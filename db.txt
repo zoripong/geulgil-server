@@ -14,11 +14,12 @@ flush privileges;
 
 
 # [word]
-id, word, mean, part
+id, word, part
 
 CREATE TABLE word(
     id INT(255) NOT NULL auto_increment,
     word VARCHAR(50) NOT NULL,
+    part INT(1) NOT NULL default '0',
     PRIMARY KEY (id)
 )DEFAULT CHARSET=utf8;
 
@@ -60,3 +61,5 @@ CREATE TABLE similar_keywords(
 
 # db 구조 추출
 flask-sqlacodegen "mysql://[id]:[password]@[IP address]/[DB]" --flask > models.py
+
+flask-sqlacodegen "mysql://geulgil:dicGeulgil18*@119.205.221.104/Geulgil" --flask > models.py

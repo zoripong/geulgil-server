@@ -1,6 +1,7 @@
 # coding: utf-8
 from sqlalchemy import Column, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
+from sqlalchemy.schema import FetchedValue
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -42,3 +43,4 @@ class Word(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     word = db.Column(db.String(50), nullable=False)
+    part = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())

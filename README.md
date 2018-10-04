@@ -44,15 +44,15 @@ python run.py
 | KEY           	| MEAN                                    	|
 |:---------------:	|-----------------------------------------	|
 |     status    	| 상태를 나타냄, (성공: OK, 실패: Failed) 	|
-| result        	| 검색 결과에 대한 정보를 포함            	    |
+| result        	| 검색 결과에 대한 정보를 포함            	|
 | word_id       	| 단어 고유 번호                          	|
 | word          	| 단어                                    	|
 | part          	| 단어 품사 정보                          	|
 | length        	| 결과 사이즈                             	|
 | search_result 	| 검색 결과에 대한 집합                   	|
 | mean          	| 단어의 의미                             	|
-| mean_words    	| 의미에 포함되는 단어들의 집합           	    |
-| similar_words 	| 유사어에 포함되는 단어들의 집합         	    |
+| mean_words    	| 의미에 포함되는 단어들의 집합           	|
+| similar_words 	| 유사어에 포함되는 단어들의 집합         	|
 
 > Json Structure
 ```json
