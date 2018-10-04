@@ -1,5 +1,5 @@
-from controllers.collector import save_new_word
-from models import *
+from geulgil.controllers.collector import save_new_word
+from geulgil.models import *
 
 
 # 검색 했을 때 ( 유사어 + 포함어 )
@@ -93,9 +93,9 @@ def get_single_word(word):
             "word_id": words[0].id,
             "word": words[0].word,
             "part": words[0].part,
-            "mean": get_mean_list(word),
-            "mean_words": get_mean_words_list(word),
-            "similar_words": get_similar_words_list(word)
+            "mean": get_mean_list(words[0].id),
+            "mean_words": get_mean_words_list(words[0].id),
+            "similar_words": get_similar_words_list(words[0].id)
         }
 
 
@@ -111,33 +111,47 @@ def get_multiple_word(words):
     return words
 
 
-# TODO
 # 특정 단어의 의미 list 를 반환 해주는 함수
-def get_mean_list(word):
-    return []
+def get_mean_list(word_id):
+    means = Mean.query.filter(Mean.word_id == word_id).all()
+    return [mean.mean
+            for mean in means]
 
 
-# TODO
 # 특정 단어의 similar word 를 반환 해주는 함수
-def get_similar_words_list(word):
-    return []
+def get_similar_words_list(word_id):
+    similar_keywords = SimilarKeyword.query.filter(SimilarKeyword.word_id == word_id).all()
+    return [similar_keyword.similar_keyword
+            for similar_keyword in similar_keywords]
 
 
-# TODO
 # 특정 단어의 mean word 를 반환 해주는 함수
-def get_mean_words_list(word):
-    return []
+def get_mean_words_list(word_id):
+    mean_keywords = MeanKeyword.query.filter(MeanKeyword.word_id == word_id).all()
+    return [mean_keyword.mean_keyword
+            for mean_keyword in mean_keywords]
 
 
-# TODO :
 # 유사어에 해당 단어가 포함되어 있는 단어들을 리턴해주는 함수
 def word_in_similar(word):
-    return [{}]
+    similar_words = SimilarKeyword.query.filter(SimilarKeyword.similar_keyword == word).all()
+
+    result = []
+    for similar_word in similar_words:
+        word = Word.query.filter(Word.id == similar_word.word_id).all()
+        result.append(get_single_word(word.word))
+
+    return result
 
 
-# TODO :
 # 의미 키워드에 포함되어 있는 단어들을 리턴해주는 함수
 def word_in_mean(word):
+    mean_words = MeanKeyword.query.filter(MeanKeyword.similar_keyword == word).all()
 
-    return [{}]
+    result = []
+    for mean_word in mean_words:
+        word = Word.query.filter(Word.id == mean_word.word_id).all()
+        result.append(get_single_word(word.word))
+
+    return result
 
