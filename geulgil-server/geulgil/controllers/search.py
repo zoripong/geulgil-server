@@ -4,13 +4,13 @@ from geulgil.models import *
 
 # 검색 했을 때 ( 유사어 + 포함어 )
 def search_word(word):
-    word_info = get_single_word(word)
-
-    # failed
-    if "status" in word_info:
-        return word_info
+    result = search_similar_word(word)
+    if result['status'] == "failed":
+        return result
     else:
-        return ''
+        mean_result = search_mean_word(word)
+        result['result']['search_result'] += mean_result['result']['search_result']
+        return result
 
 
 # 검색 했을 때 ( 유사어 )
