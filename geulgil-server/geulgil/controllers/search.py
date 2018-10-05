@@ -4,6 +4,7 @@ from geulgil.models import *
 
 # 검색 했을 때 ( 유사어 + 포함어 )
 def search_word(word):
+
     result = search_similar_word(word)
     if result['status'] == "failed":
         return result
@@ -16,7 +17,6 @@ def search_word(word):
 # 검색 했을 때 ( 유사어 )
 def search_similar_word(word):
     word_info = get_single_word(word)
-
     # failed
     if "status" in word_info:
         return word_info
@@ -133,25 +133,24 @@ def get_mean_words_list(word_id):
 
 
 # 유사어에 해당 단어가 포함되어 있는 단어들을 리턴해주는 함수
-def word_in_similar(word):
-    similar_words = SimilarKeyword.query.filter(SimilarKeyword.similar_keyword == word).all()
-
+def word_in_similar(words):
     result = []
-    for similar_word in similar_words:
-        word = Word.query.filter(Word.id == similar_word.word_id).all()
-        result.append(get_single_word(word.word))
-
+    for word in words:
+        similar_words = SimilarKeyword.query.filter(SimilarKeyword.similar_keyword == word).all()
+        for similar_word in similar_words:
+            words = Word.query.filter(Word.id == similar_word.word_id).all()
+            result.append(get_single_word(words[0].word))
     return result
 
 
 # 의미 키워드에 포함되어 있는 단어들을 리턴해주는 함수
 def word_in_mean(word):
-    mean_words = MeanKeyword.query.filter(MeanKeyword.similar_keyword == word).all()
+    mean_words = MeanKeyword.query.filter(MeanKeyword.mean_keyword == word).all()
 
     result = []
     for mean_word in mean_words:
-        word = Word.query.filter(Word.id == mean_word.word_id).all()
-        result.append(get_single_word(word.word))
+        words = Word.query.filter(Word.id == mean_word.word_id).all()
+        result.append(get_single_word(words[0].word))
 
     return result
 

@@ -1,3 +1,5 @@
+from urllib.parse import quote
+
 from flask import Blueprint, jsonify
 
 from geulgil.controllers.search import search_word, search_similar_word, search_mean_word

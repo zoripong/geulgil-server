@@ -1,8 +1,9 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 
 bp = Blueprint('test', __name__)
 
 
 @bp.route('/')
 def test():
-    return 'Hello World'
+    return jsonify({"status":"ok"})
+
