@@ -7,6 +7,7 @@
 ### Preparation
 * [python 3.5.2](https://www.python.org/downloads/release/python-352/)
 * [virtualenv](https://virtualenv.pypa.io/en/stable/#)
+* [KoLNPy](https://konlpy-ko.readthedocs.io/ko/v0.4.3/)
 
 ### Installing
 > requirements 설치
