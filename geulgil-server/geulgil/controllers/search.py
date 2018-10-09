@@ -4,12 +4,18 @@ from geulgil.models import *
 
 # 검색 했을 때 ( 유사어 + 포함어 )
 def search_word(word):
+    # 유사어 검색
     result = search_similar_word(word)
     if result['status'] == "failed":
         return result
     else:
+        # 포함어 검색
         mean_result = search_mean_word(word)
         result['result']['search_result'] += mean_result['result']['search_result']
+
+        # 중복 제거
+        result['result']['search_result'] = data_deduplication(result['result']['search_result'])
+
         return result
 
 
@@ -33,6 +39,9 @@ def search_similar_word(word):
 
         # 검색 단어의 유사어가 유사어에 포함되어 있는 단어들의 정보
         search_result += word_in_similar(similar_words)
+
+        # 중복제거
+        search_result = data_deduplication(search_result)
 
         result = {
             "status": "ok",
@@ -60,6 +69,9 @@ def search_mean_word(word):
         search_result = [word_info]
         # 검색 단어가 의미에 포함된 단어들의 정보 추가
         search_result += word_in_mean(word)
+
+        # 중복 제거
+        search_result = data_deduplication(search_result)
 
         result = {
             "status": "ok",
@@ -125,7 +137,6 @@ def get_similar_words_list(word_id):
 
 # 특정 단어의 mean word 를 반환 해주는 함수
 def get_mean_words_list(word_id):
-    # TODO : FIX
     means = Mean.query.filter(Mean.word_id == word_id).all()
     result = []
     for mean in means:
@@ -148,7 +159,6 @@ def word_in_similar(words):
 
 # 의미 키워드에 포함되어 있는 단어들을 리턴해주는 함수
 def word_in_mean(word):
-    # FIXME
     mean_words = MeanKeyword.query.filter(MeanKeyword.mean_keyword == word).all()
 
     result = []
@@ -160,3 +170,14 @@ def word_in_mean(word):
 
     return result
 
+
+# result 중복되는 것들 제거해주기
+def data_deduplication(result):
+    word_id_list = []
+    new_list = []
+    for item in result:
+        if item['word_id'] not in word_id_list:
+            word_id_list.append(item['word_id'])
+            new_list.append(item)
+
+    return new_list
