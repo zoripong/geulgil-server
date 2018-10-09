@@ -104,8 +104,8 @@ def get_single_word(word):
         "word": words[0].word,
         "part": words[0].part,
         "mean": get_mean_list(words[0].id),
-        "mean_words": get_mean_words_list(words[0].id),
-        "similar_words": get_similar_words_list(words[0].id)
+        "mean_keywords": get_mean_words_list(words[0].id),
+        "similar_keywords": get_similar_words_list(words[0].id)
     }
 
 
