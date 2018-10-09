@@ -92,14 +92,13 @@ def get_similar_words(word, means):
             for e in tag.parent.parent.parent.findAll('sup'):
                 e.extract()
             for similar in tag.parent.parent.parent.findAll('a', 'syno'):
-                similar_list.append(similar.text)
+                if similar.text not in similar_list:
+                    similar_list.append(similar.text)
     return similar_list
 
 
 # TODO : 중복제거
 # [ 의미에서 단어가져오기 ]
 def get_word_in_mean(mean):
-    print(mean)
-    print(Twitter().nouns(mean))
-    return Twitter().nouns(mean)
+    return list(set(Twitter().nouns(mean)))
 
