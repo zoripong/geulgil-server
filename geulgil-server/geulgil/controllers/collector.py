@@ -1,20 +1,18 @@
 import urllib
 from urllib.parse import quote
+
+import requests
 from bs4 import BeautifulSoup
 from geulgil import db
 from geulgil.models import *
 from konlpy.tag import Twitter
 
-import requests
 import config
 
 
 # [ 데이터베이스에서 새로운 단어를 추가 저장함 ]
 def save_new_word(word):
     saemmul_data = get_saemmul_words(word)
-
-    similar_data = get_similar_words(word, saemmul_data['mean'])
-    mean_data = get_word_in_mean(saemmul_data['mean'])
 
     # Word
     word_item = Word(word=word, part=0)
@@ -28,12 +26,16 @@ def save_new_word(word):
         mean = Mean(word_id=word_id, mean=mean_sentence)
         db.session.add(mean)
 
-    # MeanKeyword
-    for mean_word in mean_data:
-        mean_keyword = MeanKeyword(word_id=word_id, mean_keyword=mean_word)
-        db.session.add(mean_keyword)
+        # MeanKeyword
+        means = Mean.query.filter(Mean.mean == mean_sentence, Mean.word_id == word_id).all()
+        mean_id = means[0].id
+        mean_keywords = get_word_in_mean(mean_sentence)
+        for keyword in mean_keywords:
+            mean_keyword = MeanKeyword(mean_id=mean_id, mean_keyword=keyword)
+            db.session.add(mean_keyword)
 
     # SimilarKeyword
+    similar_data = get_similar_words(word, saemmul_data['mean'])
     for similar in similar_data:
         similar_keyword = SimilarKeyword(word_id=word_id, similar_keyword=similar)
         db.session.add(similar_keyword)
@@ -94,8 +96,8 @@ def get_similar_words(word, means):
 
 
 # [ 의미에서 단어가져오기 ]
-def get_word_in_mean(means):
-    mean_words = []
-    for mean in means:
-        mean_words += Twitter().nouns(mean)
-    return mean_words
+def get_word_in_mean(mean):
+    print(mean)
+    print(Twitter().nouns(mean))
+    return Twitter().nouns(mean)
+

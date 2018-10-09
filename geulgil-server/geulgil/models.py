@@ -22,10 +22,10 @@ class MeanKeyword(db.Model):
     __tablename__ = 'mean_keywords'
 
     id = db.Column(db.Integer, primary_key=True)
-    word_id = db.Column(db.ForeignKey('word.id'), nullable=False, index=True)
+    mean_id = db.Column(db.ForeignKey('mean.id'), nullable=False, index=True)
     mean_keyword = db.Column(db.String(50), nullable=False)
 
-    word = db.relationship('Word', primaryjoin='MeanKeyword.word_id == Word.id', backref='mean_keywords')
+    mean = db.relationship('Mean', primaryjoin='MeanKeyword.mean_id == Mean.id', backref='mean_keywords')
 
 
 class SimilarKeyword(db.Model):

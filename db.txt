@@ -41,10 +41,10 @@ id, word_id, mean_keyword
 
 CREATE TABLE mean_keywords(
     id INT(255) NOT NULL auto_increment,
-    word_id INT(255) NOT NULL,
+    mean_id INT(255) NOT NULL,
     mean_keyword VARCHAR(50) NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (word_id) REFERENCES word(id)
+    FOREIGN KEY (mean_id) REFERENCES mean(id)
 )DEFAULT CHARSET=utf8;
 
 
@@ -62,4 +62,4 @@ CREATE TABLE similar_keywords(
 # db 구조 추출
 flask-sqlacodegen "mysql://[id]:[password]@[IP address]/[DB]" --flask > models.py
 
-flask-sqlacodegen "mysql://geulgil:dicGeulgil18*@119.205.221.104/Geulgil" --flask > models.py
+

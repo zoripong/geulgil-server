@@ -4,7 +4,6 @@ from geulgil.models import *
 
 # 검색 했을 때 ( 유사어 + 포함어 )
 def search_word(word):
-
     result = search_similar_word(word)
     if result['status'] == "failed":
         return result
@@ -88,15 +87,14 @@ def get_single_word(word):
         words = Word.query.filter(Word.word == word).all()
         if len(words) <= 0:
             return result
-    else:
-        return {
-            "word_id": words[0].id,
-            "word": words[0].word,
-            "part": words[0].part,
-            "mean": get_mean_list(words[0].id),
-            "mean_words": get_mean_words_list(words[0].id),
-            "similar_words": get_similar_words_list(words[0].id)
-        }
+    return {
+        "word_id": words[0].id,
+        "word": words[0].word,
+        "part": words[0].part,
+        "mean": get_mean_list(words[0].id),
+        "mean_words": get_mean_words_list(words[0].id),
+        "similar_words": get_similar_words_list(words[0].id)
+    }
 
 
 # 단어 여러개의 정보
@@ -127,9 +125,14 @@ def get_similar_words_list(word_id):
 
 # 특정 단어의 mean word 를 반환 해주는 함수
 def get_mean_words_list(word_id):
-    mean_keywords = MeanKeyword.query.filter(MeanKeyword.word_id == word_id).all()
-    return [mean_keyword.mean_keyword
-            for mean_keyword in mean_keywords]
+    # TODO : FIX
+    means = Mean.query.filter(Mean.word_id == word_id).all()
+    result = []
+    for mean in means:
+        mean_keywords = MeanKeyword.query.filter(MeanKeyword.mean_id == mean.id).all()
+        result.append([mean_keyword.mean_keyword
+                       for mean_keyword in mean_keywords])
+    return result
 
 
 # 유사어에 해당 단어가 포함되어 있는 단어들을 리턴해주는 함수
@@ -145,12 +148,15 @@ def word_in_similar(words):
 
 # 의미 키워드에 포함되어 있는 단어들을 리턴해주는 함수
 def word_in_mean(word):
+    # FIXME
     mean_words = MeanKeyword.query.filter(MeanKeyword.mean_keyword == word).all()
 
     result = []
     for mean_word in mean_words:
-        words = Word.query.filter(Word.id == mean_word.word_id).all()
-        result.append(get_single_word(words[0].word))
+        means = Mean.query.filter(Mean.id == mean_word.mean_id).all()
+        for mean in means:
+            words = Word.query.filter(Word.id == mean.word_id).all()
+            result.append(get_single_word(words[0].word))
 
     return result
 
