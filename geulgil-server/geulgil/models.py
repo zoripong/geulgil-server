@@ -5,7 +5,8 @@ from sqlalchemy.schema import FetchedValue
 from flask_sqlalchemy import SQLAlchemy
 
 
-db = SQLAlchemy()
+# db = SQLAlchemy()
+from geulgil import db # TODO TEST
 
 
 class Mean(db.Model):

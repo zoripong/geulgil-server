@@ -78,7 +78,6 @@ def get_saemmul_words(word):
     return xml_dict  # type list of dict
 
 
-# TODO : 중복제거
 # [ 네이버 사전에서 유사어 가져옴]
 def get_similar_words(word, means):
     url = config.DICT_URL + quote(word)
@@ -97,7 +96,6 @@ def get_similar_words(word, means):
     return similar_list
 
 
-# TODO : 중복제거
 # [ 의미에서 단어가져오기 ]
 def get_word_in_mean(mean):
     return list(set(Twitter().nouns(mean)))
