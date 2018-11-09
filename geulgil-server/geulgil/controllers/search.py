@@ -29,7 +29,7 @@ def search_similar_word(word):
         # 검색 단어에 대한 정보
         search_result = [word_info]
 
-        similar_words = word_info['similar_words']
+        similar_words = word_info['similar_keywords']
 
         # 검색 단어의 유사어에 대한 정보
         search_result += get_multiple_word(similar_words)
