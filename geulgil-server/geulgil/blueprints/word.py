@@ -1,8 +1,7 @@
-from urllib.parse import quote
-
 from flask import Blueprint, jsonify
 
-from geulgil.controllers.search import search_word, search_similar_word, search_mean_word
+from geulgil.controllers.search\
+    import search_word, search_similar_word, search_mean_word
 
 bp = Blueprint('word', __name__, url_prefix='/words')
 
@@ -23,4 +22,3 @@ def get_similar_word(word):
 @bp.route('/<string:word>/mean')
 def get_mean_word(word):
     return jsonify(search_mean_word(word))
-

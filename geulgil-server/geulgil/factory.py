@@ -11,7 +11,8 @@ def create_app(debug=False):
     app = Flask(__name__)
     app.debug = debug
     db_config = config.DATABASE_CONFIG
-    uri = "mysql://" + db_config['user'] + ":" + db_config['password'] + "@" + db_config['host'] + "/" + db_config['db']
+    uri = "mysql://" + db_config['user'] + ":" + db_config['password']\
+          + "@" + db_config['host'] + "/" + db_config['db']
     app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
     register_logger(app)
@@ -40,6 +41,4 @@ def register_blueprints(app):
         print(mod)
         if hasattr(mod, 'bp'):
             app.register_blueprint(mod.bp)
-
     return None
-

@@ -1,13 +1,12 @@
-import urllib
 from urllib.parse import quote
-
-import requests
 from bs4 import BeautifulSoup
-from geulgil import db
-from geulgil.models import *
 from konlpy.tag import Twitter
+from geulgil import db
+from geulgil.models import Word, Mean, MeanKeyword, SimilarKeyword
 
 import config
+import urllib
+import requests
 
 
 # [ 데이터베이스에서 새로운 단어를 추가 저장함 ]
@@ -27,7 +26,9 @@ def save_new_word(word):
         db.session.add(mean)
 
         # MeanKeyword
-        means = Mean.query.filter(Mean.mean == mean_sentence, Mean.word_id == word_id).all()
+        means = Mean.query.filter(Mean.mean == mean_sentence,
+                                  Mean.word_id == word_id)\
+            .all()
         mean_id = means[0].id
         mean_keywords = get_word_in_mean(mean_sentence)
         for keyword in mean_keywords:
@@ -37,7 +38,8 @@ def save_new_word(word):
     # SimilarKeyword
     similar_data = get_similar_words(word, saemmul_data['mean'])
     for similar in similar_data:
-        similar_keyword = SimilarKeyword(word_id=word_id, similar_keyword=similar)
+        similar_keyword = SimilarKeyword(word_id=word_id,
+                                         similar_keyword=similar)
         db.session.add(similar_keyword)
 
     db.session.commit()
@@ -99,4 +101,3 @@ def get_similar_words(word, means):
 # [ 의미에서 단어가져오기 ]
 def get_word_in_mean(mean):
     return list(set(Twitter().nouns(mean)))
-

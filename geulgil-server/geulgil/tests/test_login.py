@@ -8,11 +8,12 @@ class TestLogin:
     def test_login(self, client):
         assert client.get(url_for('stafflogin')).status_code == 405
         res = client.post('/login',
-                          data=json.dumps(dict(staff_name='test24', staff_password='test')),
+                          data=json.dumps(dict(staff_name='test24',
+                                               staff_password='test')),
                           content_type='application/json',
                           follow_redirects=True)
 
-        invalid_password_json = dict(message="Staff name and password pair not match",
+        invalid_password_json = dict(message="not match",
                                      errors=dict(
                                          resource="Login",
                                          code="invalid",
@@ -20,4 +21,3 @@ class TestLogin:
                                          stack_trace=None, ),
                                      )
         assert json.loads(res.data) == invalid_password_json
-

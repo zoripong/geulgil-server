@@ -1,12 +1,6 @@
 # coding: utf-8
-from sqlalchemy import Column, ForeignKey, Integer, String, Text
-from sqlalchemy.orm import relationship
-from sqlalchemy.schema import FetchedValue
-from flask_sqlalchemy import SQLAlchemy
-
-
 # db = SQLAlchemy()
-from geulgil import db # TODO TEST
+from geulgil import db  # TODO TEST
 
 
 class Mean(db.Model):
@@ -16,7 +10,9 @@ class Mean(db.Model):
     word_id = db.Column(db.ForeignKey('word.id'), nullable=False, index=True)
     mean = db.Column(db.Text, nullable=False)
 
-    word = db.relationship('Word', primaryjoin='Mean.word_id == Word.id', backref='means')
+    word = db.relationship('Word',
+                           primaryjoin='Mean.word_id == Word.id',
+                           backref='means')
 
 
 class MeanKeyword(db.Model):
@@ -26,7 +22,9 @@ class MeanKeyword(db.Model):
     mean_id = db.Column(db.ForeignKey('mean.id'), nullable=False, index=True)
     mean_keyword = db.Column(db.String(50), nullable=False)
 
-    mean = db.relationship('Mean', primaryjoin='MeanKeyword.mean_id == Mean.id', backref='mean_keywords')
+    mean = db.relationship('Mean',
+                           primaryjoin='MeanKeyword.mean_id == Mean.id',
+                           backref='mean_keywords')
 
 
 class SimilarKeyword(db.Model):
@@ -36,7 +34,9 @@ class SimilarKeyword(db.Model):
     word_id = db.Column(db.ForeignKey('word.id'), nullable=False, index=True)
     similar_keyword = db.Column(db.String(50), nullable=False)
 
-    word = db.relationship('Word', primaryjoin='SimilarKeyword.word_id == Word.id', backref='similar_keywords')
+    word = db.relationship('Word',
+                           primaryjoin='SimilarKeyword.word_id == Word.id',
+                           backref='similar_keywords')
 
 
 class Word(db.Model):
@@ -44,4 +44,6 @@ class Word(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     word = db.Column(db.String(50), nullable=False)
-    part = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
+    part = db.Column(db.Integer,
+                     nullable=False,
+                     server_default=db.FetchedValue())
