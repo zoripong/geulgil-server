@@ -12,7 +12,7 @@ Flask-SQLAlchemy==2.3.2
 idna==2.7
 inflect==1.0.1
 itsdangerous==0.24
-Jinja2==2.10
+Jinja2==2.11.3
 JPype1==0.6.3
 konlpy==0.5.1
 MarkupSafe==1.0
